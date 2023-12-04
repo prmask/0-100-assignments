@@ -19,4 +19,5 @@ function isAnagram(str1, str2) {
   if (JSON.stringify(sortedStr1) === JSON.stringify(sortedStr2)) return true;
 }
 
+// console.log(isAnagram("werty  sdfg xcvb", "bvcx gfds trew"));
 module.exports = isAnagram;

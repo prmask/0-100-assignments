@@ -4,7 +4,12 @@
 */
 
 function isPalindrome(str) {
-  return true;
+  // Convert the string to lowercase as the result is case insensitive
+  const lowStr = str.toLowerCase();
+
+  // Return the result after checking if the reverse of the string is equal to the string
+  return lowStr === lowStr.split("").reverse().join("");
 }
 
+// console.log(isPalindrome("Malayalim"));
 module.exports = isPalindrome;

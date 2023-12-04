@@ -102,4 +102,5 @@ const transactionList = [
   },
 ];
 
+// console.log(categoryList(transactionList));
 module.exports = calculateTotalSpentByCategory;

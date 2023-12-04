@@ -9,5 +9,27 @@ There is no automated test for this one, this is more for you to understand time
 */
 
 function calculateTime(n) {
-    return 0.01;
+  // Start time
+  const timeStart = new Date();
+
+  // Calculate the sum from 1 to n
+  let sum = 0;
+  for (let i = 0; i <= n; i++) {
+    sum += i;
+  }
+
+  // End time
+  const timeEnd = new Date();
+
+  // Time taken in seconds
+  const timeTaken = (timeEnd - timeStart) / 1000;
+
+  //   console.log(`Sum from 1 to ${n} is ${sum} and it took ${timeTaken} seconds`);
+
+  return timeTaken;
 }
+
+// calculateTime(100);
+// calculateTime(100000);
+// calculateTime(1000000000);
+module.exports = calculateTime;
