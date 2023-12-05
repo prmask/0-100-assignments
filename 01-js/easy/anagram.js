@@ -6,8 +6,8 @@
 
 function isAnagram(str1, str2) {
   // Remove non-alphanumeric characters and convert to lowercase
-  const strLoc1 = str1.toLowerCase().replace(/[^\w]/g, "");
-  const strLoc2 = str2.toLowerCase().replace(/[^\w]/g, "");
+  const strLoc1 = str1.toLowerCase();
+  const strLoc2 = str2.toLowerCase();
 
   // Checks if the lengths are same
   if (strLoc1.length != strLoc2.length) return false;
@@ -17,6 +17,7 @@ function isAnagram(str1, str2) {
   const sortedStr2 = strLoc2.split("").sort().join();
 
   if (JSON.stringify(sortedStr1) === JSON.stringify(sortedStr2)) return true;
+  else return false;
 }
 
 // console.log(isAnagram("werty  sdfg xcvb", "bvcx gfds trew"));

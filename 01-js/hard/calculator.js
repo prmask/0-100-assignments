@@ -53,12 +53,29 @@ class Calculator {
   getResult() {
     return this.result;
   }
+
+  // Calculate expression
   calculate(expression) {
     // Validate the expression for non-numerical characters
-    if (!/^\s*(\d+(\.\d+)?[\+\-\*\/\(\)\s]*)+$/.test(expression)) {
+    if (!/^\s*(\(*\s*\d+(\.\d+)?[\+\-\*\/\(\)\s]*)+$/.test(expression)) {
       throw new Error(
-        "Invalid expression. Please provide a valid arithmetic expression."
+        "Invalid expression, please provide a valid arithmetic expression."
       );
+    }
+
+    // Replace multiple spaces with single space
+    const cleanExpression = expression.replace(/\s+/g, " ");
+
+    try {
+      const evalResult = eval(cleanExpression);
+
+      if (!isFinite(evalResult)) {
+        throw new Error("Division by zero detected.");
+      }
+
+      this.result = evalResult;
+    } catch (error) {
+      throw new Error("Error in evaluating the expression.");
     }
   }
 }
