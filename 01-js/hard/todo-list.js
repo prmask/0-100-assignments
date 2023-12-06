@@ -22,17 +22,19 @@ class Todo {
   remove(index) {
     if (index >= 0 && index < this.todos.length) {
       this.todos.splice(index, 1);
-    } else {
-      throw new Error("Invalid index. Todo not found.");
     }
+    // else {
+    // throw new Error("Invalid index. Todo not found.");
+    // }
   }
 
   update(index, updatedTodo) {
     if (index >= 0 && index < this.todos.length) {
       this.todos[index] = updatedTodo;
-    } else {
-      throw new Error("Invalid index. Todo not found.");
     }
+    // else {
+    // throw new Error("Invalid index. Todo not found.");
+    // }
   }
 
   getAll() {
@@ -43,7 +45,8 @@ class Todo {
     if (index >= 0 && index < this.todos.length) {
       return this.todos[index];
     } else {
-      throw new Error("Invalid index. Todo not found.");
+      return null;
+      // throw new Error("Invalid index. Todo not found.");
     }
   }
 
