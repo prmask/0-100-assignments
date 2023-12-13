@@ -5,6 +5,26 @@
  */
 
 function sleep(milliseconds) {
+  return new Promise((resolve) => {
+    const startTime = Date.now();
+
+    function checkTime() {
+      if (Date.now() - startTime >= milliseconds) {
+        resolve();
+      } else {
+        setTimeout(checkTime, 0);
+      }
+    }
+
+    checkTime();
+  });
 }
 
+// sleep(3000)
+//   .then((message) => {
+//     console.log(message);
+//   })
+//   .catch((error) => {
+//     console.log("Error: ", error);
+//   });
 module.exports = sleep;

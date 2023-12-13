@@ -8,4 +8,4 @@ function updateCounter() {
   setTimeout(updateCounter, 1000);
 }
 
-updateCounter();
+module.exports = updateCounter;
