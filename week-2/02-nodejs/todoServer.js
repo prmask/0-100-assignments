@@ -39,11 +39,94 @@
 
   Testing the server - run `npm run test-todoServer` command in terminal
  */
-  const express = require('express');
-  const bodyParser = require('body-parser');
-  
-  const app = express();
-  
-  app.use(bodyParser.json());
-  
-  module.exports = app;
+const express = require("express");
+const bodyParser = require("body-parser");
+const fs = require("fs");
+
+const app = express();
+const PORT = 3000;
+
+app.use(bodyParser.json());
+
+const dataFilePath = "todos.json";
+let todos = [];
+
+try {
+  const dataFile = fs.readFileSync(dataFilePath, "utf-8");
+  todos = JSON.parse(dataFile);
+} catch (error) {
+  console.error("Error reading data file: ", error.message);
+}
+
+function saveDataToFile() {
+  fs.writeFileSync(dataFilePath, JSON.stringify(todos), "utf-8");
+}
+
+// Get
+app.get("/todos", (req, res) => {
+  res.status(200).json(todos);
+});
+
+// Get with id
+app.get("/todos/:id", (req, res) => {
+  const id = req.params.id;
+  const todo = todos.find((todo) => todo.id === parseInt(id));
+  if (todo) {
+    res.status(200).json(todo);
+  } else {
+    res.status(404).send("Not found");
+  }
+});
+
+// Post
+app.post("/todos", (req, res) => {
+  const newTodo = {
+    id: todos.length + 1,
+    title: req.body.title,
+    completed: req.body.completed,
+    description: req.body.description,
+  };
+
+  todos.push(newTodo);
+  saveDataToFile();
+  res.status(201).json({ id: newTodo.id });
+});
+
+// Put - update
+app.put("/todos/:id", (req, res) => {
+  const id = req.params.id;
+  const updatedTodo = req.body;
+  const index = todos.findIndex((todo) => todo.id === parseInt(id));
+  if (index !== -1) {
+    todos[index] = { ...tools[index], ...updatedTodo };
+    saveDataToFile();
+    res.status(200).send("OK");
+  } else {
+    res.status(404).send("Not Found");
+  }
+});
+
+// Delete
+app.delete("/todos/:id", (req, res) => {
+  const id = req.params.id;
+  const index = todos.findIndex((todo) => todo.id === parseInt(id));
+  if (index !== -1) {
+    todo.splice(index, 1);
+    saveDataToFile();
+    res.status(200).send("OK");
+  } else {
+    res.status(404).send("Not Found");
+  }
+});
+
+// 404 for any other route
+app.use((req, res) => {
+  res.status(404).send("Not Found");
+});
+
+// Start the server
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
+});
+
+module.exports = app;
