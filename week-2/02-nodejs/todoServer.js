@@ -97,8 +97,9 @@ app.put("/todos/:id", (req, res) => {
   const id = req.params.id;
   const updatedTodo = req.body;
   const index = todos.findIndex((todo) => todo.id === parseInt(id));
+  console.log("index", index);
   if (index !== -1) {
-    todos[index] = { ...tools[index], ...updatedTodo };
+    todos[index] = { ...todos[index], ...updatedTodo };
     saveDataToFile();
     res.status(200).send("OK");
   } else {
@@ -111,7 +112,7 @@ app.delete("/todos/:id", (req, res) => {
   const id = req.params.id;
   const index = todos.findIndex((todo) => todo.id === parseInt(id));
   if (index !== -1) {
-    todo.splice(index, 1);
+    todos.splice(index, 1);
     saveDataToFile();
     res.status(200).send("OK");
   } else {
@@ -125,8 +126,8 @@ app.use((req, res) => {
 });
 
 // Start the server
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
+// app.listen(PORT, () => {
+//   console.log(`Server is running on http://localhost:${PORT}`);
+// });
 
 module.exports = app;

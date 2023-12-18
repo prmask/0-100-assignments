@@ -12,10 +12,54 @@
     - For any other route not defined in the server return 404
     Testing the server - run `npm run test-fileServer` command in terminal
  */
-const express = require('express');
-const fs = require('fs');
-const path = require('path');
-const app = express();
+const express = require("express");
+const fs = require("fs");
+const path = require("path");
 
+const app = express();
+const PORT = 3000;
+const filesDirectory = "./files";
+
+// app.use((req, res, next) => {
+//   console.log(`${req.method} ${req.url}`);
+//   next();
+// });
+
+// Get
+app.get("/files", (req, res) => {
+  fs.readdir(filesDirectory, (err, files) => {
+    if (err) {
+      // console.log("Error reading files: ", err);
+      res.status(500).send("Internal Server Error");
+    } else {
+      res.status(200).json(files);
+    }
+  });
+});
+
+// Get with filename
+app.get("/file/:filename", (req, res) => {
+  const fileName = req.params.filename;
+  const filePath = path.join(filesDirectory, fileName);
+  // console.log("filePath->>>> ", filePath);
+  fs.readFile(filePath, "utf-8", (err, data) => {
+    if (err) {
+      // console.log(">>>>Error reading file: ", err);
+      res.status(404).send("File not found");
+    } else {
+      res.status(200).send(data);
+    }
+  });
+});
+
+// 404
+app.use((req, res) => {
+  res.status(404).send("Route not found");
+});
+
+// Start the server
+// app.listen(PORT, () => {
+//   console.log(`Server is running on http://localhost:${PORT}`);
+// });
 
 module.exports = app;
