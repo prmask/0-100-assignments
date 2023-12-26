@@ -15,21 +15,23 @@ let numberOfRequestsForUser = {};
 
 setInterval(() => {
   numberOfRequestsForUser = {};
-}, 10000);
+}, 1000);
 
 app.use((req, res, next) => {
-  const userId = req.headers["userId"];
+  const userId = req.headers["user-id"];
 
-  numberOfRequestsForUser[userId] = numberOfRequestsForUser[userId] || 0;
+  if (numberOfRequestsForUser[userId]) {
+    numberOfRequestsForUser[userId] = numberOfRequestsForUser[userId] + 1;
 
-  if (numberOfRequestsForUser >= 5) {
-    console.log("--------------------------");
-    return res.status(404).send("Rate limit reached.");
+    if (numberOfRequestsForUser[userId] > 5) {
+      res.status(404).send("Rate limit reached.");
+    } else {
+      next();
+    }
+  } else {
+    numberOfRequestsForUser[userId] = 1;
+    next();
   }
-
-  numberOfRequestsForUser[userId]++;
-
-  next();
 });
 
 app.get("/user", function (req, res) {
@@ -40,6 +42,6 @@ app.post("/user", function (req, res) {
   res.status(200).json({ msg: "created dummy user" });
 });
 
-app.listen(3000);
+// app.listen(3000);
 
 module.exports = app;

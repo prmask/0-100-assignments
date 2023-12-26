@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <script>
+    function addTodo() {
+      const title = document.getElementById("title").value;
+      const description = document.getElementById("description").value;
+      const originalHtml = document.getElementById("container").value;
+      const outerDiv = document.createElement("div");
+      outerDiv.innerHTML = title;
+      outerDiv.getElementById("container").appendChild(outerDiv);
+    }
+  </script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input type="text" placeholder="title" />
+    <input type="text" placeholder="description" />
+    <button onclick="addTodo()">Add To Do</button>
+    <div>
+      <div>title</div>
+      <div>description</div>
+    </div>
+  </body>
+</html>

@@ -1,48 +1,53 @@
 const express = require("express");
+const zod = require("zod");
 const app = express();
 
-function userMiddleware(req, res, next) {
-  if (username != "prem" && password != "pass") {
-    res.status(403).json({ msg: "User doesnt exist" });
-    return;
+const schema = zod.array(zod.number());
+
+app.use(express.json());
+
+// const kidneysInput = z.literal("1").or(z.literal("2"));
+
+//  Zod schema for this
+// {
+//   email: string => email
+//   password: at least 8 letters
+//   country: "IN", "US"
+//  }
+
+// const sampleSchema = zod.object({
+//   email: zod.string().email(),
+//   password: zod.string().min(8),
+//   country: zod.literal("IN").or(zod.literal("US")),
+// });
+
+app.get("/health-check", (req, res) => {
+  // Do health checks here
+  // const kidneyId = req.body.kidneyId;
+  // const validation = kidneysInput.safeParse(kidneyId);
+
+  const kidneys = req.body.kidneys;
+  const response = schema.safeParse(kidneys);
+  if (!response.success) {
+    res.status(411).json({
+      msg: "input is invalid",
+    });
   } else {
-    next();
+    res.send({
+      response,
+    });
   }
-}
 
-function kidneyMiddleware(req, res, next) {
-  if (kidneyId != 1 && kidneyId != 2) {
-    res.status(411).json({ msg: "wrong inputs" });
-    return;
-  } else {
-    next();
-  }
-}
+  // if (!validation.success) {
+  //   res.status("Incorrect input");
+  //   return;
+  // }
 
-app.get("/health-check", userMiddleware, kidneyMiddleware, (req, res) => {
-  // Do health checks here
-  //   const kidneyId = req.query.kidneyId;
-  //   const username = req.headers.username;
-  //   const password = req.headers.password;
-
-  res.send("Your Heart is healthy");
+  // res.send("Your kidney length is " + kidneyLength);
 });
 
-app.get("/kidney-check", userMiddleware, kidneyMiddleware, (req, res) => {
-  // Do health checks here
-  //   const kidneyId = req.query.kidneyId;
-  //   const username = req.headers.username;
-  //   const password = req.headers.password;
-
-  res.send("Your Kidney is healthy");
-});
-app.get("/heart-check", userMiddleware, (req, res) => {
-  // Do health checks here
-  //   const kidneyId = req.query.kidneyId;
-  //   const username = req.headers.username;
-  //   const password = req.headers.password;
-
-  res.send("Your Heart is healthy");
-});
+// app.use((error, req, res, next) => {
+//   res.status(500).send("An internal server error occured");
+// });
 
 app.listen(3000);

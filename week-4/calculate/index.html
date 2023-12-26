@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <style>
+    .container {
+      padding: 5px 0;
+      background-color: #0ff;
+      color: orangered;
+      font-size: 40px;
+      font-weight: bolder;
+      margin-right: 50%;
+    }
+  </style>
+  <body>
+    <script>
+      function populateDiv() {
+        const a = document.getElementById("firstNumber").value;
+        const b = document.getElementById("secondNumber").value;
+        const element = document.getElementById("finalSum");
+        element.innerHTML = parseInt(a) + parseInt(b);
+      }
+    </script>
+    <div class="container">
+      <input
+        type="text"
+        oninput="populateDiv()"
+        id="firstNumber"
+        placeholder="First number"
+      />
+    </div>
+    <div class="container">
+      <input
+        type="text"
+        oninput="populateDiv()"
+        id="secondNumber"
+        placeholder="Second Number"
+      />
+    </div>
+    <!-- <div class="container">
+      <button>Calculate sum</button>
+    </div> -->
+    <div class="container" id="finalSum"></div>
+  </body>
+</html>
