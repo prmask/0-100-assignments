@@ -7,6 +7,7 @@ const router = Router();
 router.use(adminMiddleware);
 
 // Admin Routes
+<<<<<<< HEAD
 // Implement admin signup logic
 // - POST /admin/signup
 // Description: Creates a new admin account.
@@ -72,6 +73,7 @@ router.get("/courses", adminMiddleware, async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
+
 });
 
 module.exports = router;

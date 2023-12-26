@@ -7,6 +7,7 @@ const router = Router();
 router.use(userMiddleware);
 
 // User Routes
+<<<<<<< HEAD
 // - POST /users/signup
 //   Description: Creates a new user account.
 //   Input: { username: 'user', password: 'pass' }
@@ -62,4 +63,7 @@ router.post("/courses/:courseId", userMiddleware, (req, res) => {
 //   Output: { purchasedCourses: [ { id: 1, title: 'course title', description: 'course description', price: 100, imageLink: 'https://linktoimage.com', published: true }, ... ] }
 router.get("/purchasedCourses", userMiddleware, (req, res) => {
   // Implement fetching purchased courses logic
+
 });
+
+module.exports = router
