@@ -13,61 +13,60 @@ mongoose
   });
 
 // Define schemas
-const AdminSchema = new mongoose.Schema(
-  {
-    username: {
-      type: String,
-      required: [true, "Please enter a product name"],
-    },
-    password: {
-      type: String,
-      required: [true, "Please enter a secure password"],
-    },
-  },
-  {
-    timestamps: true,
-  }
-);
 
-const UserSchema = new mongoose.Schema(
-  {
-    username: {
-      type: String,
-      required: [true, "Please enter a product name"],
-    },
-    password: {
-      type: String,
-      required: [true, "Please enter a secure password"],
-    },
+// Admin Schema
+const AdminSchema = new mongoose.Schema({
+  username: {
+    type: String,
+    required: [true, "Please enter a product name"],
+    unique: true,
   },
-  {
-    timestamps: true,
-  }
-);
+  password: {
+    type: String,
+    required: [true, "Please enter a secure password"],
+  },
+});
 
-const CourseSchema = new mongoose.Schema(
-  {
-    title: {
-      type: String,
-      required: [true, "Please enter the title"],
-    },
-    description: {
-      type: String,
-      required: [true, "Please enter the description"],
-    },
-    price: {
-      type: Number,
-      required: [true, "Please enter the price"],
-    },
-    image: {
-      type: String,
-      required: [false, "Please enter a image path"],
-    },
+// User Schema
+const UserSchema = new mongoose.Schema({
+  username: {
+    type: String,
+    required: [true, "Please enter a product name"],
+    unique: true,
   },
-  {
-    timestamps: true,
-  }
-);
+  password: {
+    type: String,
+    required: [true, "Please enter a secure password"],
+  },
+  purchased: {
+    type: Array,
+  },
+});
+
+// Course Schema
+const CourseSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: [true, "Please enter the title"],
+  },
+  description: {
+    type: String,
+    required: [true, "Please enter the description"],
+  },
+  price: {
+    type: Number,
+    required: [true, "Please enter the price"],
+  },
+  imageLink: {
+    type: String,
+    required: [true, "Please enter a image path"],
+  },
+  published: {
+    type: Boolean,
+    required: [true, "Please enter published or not"],
+    default: true,
+  },
+});
 
 const Admin = mongoose.model("Admin", AdminSchema);
 const User = mongoose.model("User", UserSchema);

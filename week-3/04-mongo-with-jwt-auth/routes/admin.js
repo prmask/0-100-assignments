@@ -1,22 +1,90 @@
 const { Router } = require("express");
-const adminMiddleware = require("../middleware/admin");
+const jwt = require("jsonwebtoken");
 const router = Router();
 
+const adminMiddleware = require("../middleware/admin");
+const { Admin, Course } = require("../db/");
+
+// router.use(adminMiddleware);
+
+const jwtPassword = "adminSecretPassword";
 // Admin Routes
-router.post('/signup', (req, res) => {
-    // Implement admin signup logic
+
+// Implement admin signup logic
+router.post("/signup", async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    const admin = await Admin.create({ username, password }).then(() => {
+      res.json({ message: "Admin created successfully" });
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 });
 
-router.post('/signin', (req, res) => {
-    // Implement admin signup logic
+// Implement admin signup logic
+router.post("/signin", async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    const admin = await Admin.where({ username, password })
+      .findOne()
+      .then((user) => {
+        if (user) {
+          let token = jwt.sign({ username }, jwtPassword);
+          res.json({ token });
+        } else {
+          return res.status(401).send("Unauthrised Access");
+        }
+      });
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500).json({
+      message: "Internal Server Error",
+    });
+  }
 });
 
-router.post('/courses', adminMiddleware, (req, res) => {
-    // Implement course creation logic
+// Implement course creation logic
+router.post("/courses", adminMiddleware, async (req, res) => {
+  const { title, description, price, imageLink } = req.body;
+
+  try {
+    const course = await Course.create({
+      title,
+      description,
+      price,
+      imageLink,
+    }).then((cor) => {
+      res.status(200).json({
+        message: "Course created successfully",
+        course: cor,
+        courseId: cor._id,
+      });
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
+  }
 });
 
-router.get('/courses', adminMiddleware, (req, res) => {
-    // Implement fetching all courses logic
+// Implement fetching all courses logic
+router.get("/courses", adminMiddleware, async (req, res) => {
+  try {
+    const courses = await Course.find({}).then((cor) => {
+      res.status(200).json({
+        message: "List of all courses",
+        courses: cor,
+      });
+    });
+  } catch (error) {
+    console.log((error) => {
+      console.log(error);
+      res.status(500).json({ message: error.message });
+    });
+  }
 });
 
 module.exports = router;

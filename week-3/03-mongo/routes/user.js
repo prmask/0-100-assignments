@@ -1,30 +1,25 @@
 const { Router } = require("express");
-const { User, Course } = require("../db");
 const userMiddleware = require("../middleware/user");
-
 const router = Router();
+const { User, Course } = require("../db");
 
-router.use(userMiddleware);
+// router.use(userMiddleware);
 
 // User Routes
-<<<<<<< HEAD
-// - POST /users/signup
-//   Description: Creates a new user account.
-//   Input: { username: 'user', password: 'pass' }
-//   Output: { message: 'User created successfully' }
-router.post("/signup", async (req, res) => {
-  // Implement user signup logic
 
+// Implement user signup logic
+router.post("/signup", async (req, res) => {
   const { username, password } = req.body;
 
   try {
     const user = await User.create({
       username,
       password,
-    });
-    res.status(200).json({
-      message: "Admin created successfully",
-      user: user,
+    }).then((usr) => {
+      res.status(200).json({
+        message: "User created successfully",
+        user: usr,
+      });
     });
   } catch (error) {
     console.log(error.message);
@@ -32,38 +27,57 @@ router.post("/signup", async (req, res) => {
   }
 });
 
-// - GET /users/courses
-//   Description: Lists all the courses.
-//   Input: Headers: { 'username': 'username', 'password': 'password' }
-//   Output: { courses: [ { id: 1, title: 'course title', description: 'course description', price: 100, imageLink: 'https://linktoimage.com', published: true }, ... ] }
-router.get("/courses", async (req, res) => {
-  // Implement listing all courses logic
+// Implement listing all courses logic
+router.get("/courses", userMiddleware, async (req, res) => {
+  const { username, password } = req.headers;
+
   try {
-    const courses = await Course.find({});
-    res.status(200).json({
-      message: "Course created successfully",
-      courses: courses,
+    const courses = await Course.find({}).then((cor) => {
+      res.status(200).json({
+        message: "List of all Coursees",
+        courses: cor,
+      });
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
 
-// - POST /users/courses/:courseId
-//   Description: Purchases a course. courseId in the URL path should be replaced with the ID of the course to be purchased.
-//   Input: Headers: { 'username': 'username', 'password': 'password' }
-//   Output: { message: 'Course purchased successfully' }
-router.post("/courses/:courseId", userMiddleware, (req, res) => {
-  // Implement course purchase logic
+// Implement course purchase logic
+router.post("/courses/:courseId", userMiddleware, async (req, res) => {
+  const { username } = req.headers;
+
+  try {
+    const result = await User.findOneAndUpdate(
+      { username },
+      { $push: { purchased: req.params.courseId } }
+    ).then((cor) => {
+      res.status(200).json({
+        message: "Course purchased successfully",
+        courses: cor,
+      });
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
-// - GET /users/purchasedCourses
-//   Description: Lists all the courses purchased by the user.
-//   Input: Headers: { 'username': 'username', 'password': 'password' }
-//   Output: { purchasedCourses: [ { id: 1, title: 'course title', description: 'course description', price: 100, imageLink: 'https://linktoimage.com', published: true }, ... ] }
+// Implement fetching purchased courses logic
 router.get("/purchasedCourses", userMiddleware, (req, res) => {
-  // Implement fetching purchased courses logic
+  const { username } = req.headers;
 
+  User.findOne({ username })
+    .then((courses) => {
+      Course.find({ _id: { $in: courses.purchased } }).then((courses) => {
+        res.status(200).json({
+          message: "Course purchased successfully",
+          courses: courses,
+        });
+      });
+    })
+    .catch((error) => {
+      res.sendStatus(500).json({ message: error.message });
+    });
 });
 
-module.exports = router
+module.exports = router;

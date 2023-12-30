@@ -1,29 +1,25 @@
 const { Router } = require("express");
-const { Admin, Course } = require("../db");
 const adminMiddleware = require("../middleware/admin");
-
 const router = Router();
+const { Admin, Course } = require("../db");
 
-router.use(adminMiddleware);
+// router.use(adminMiddleware);
 
 // Admin Routes
-<<<<<<< HEAD
+
 // Implement admin signup logic
-// - POST /admin/signup
-// Description: Creates a new admin account.
-// Input Body: { username: 'admin', password: 'pass' }
-// Output: { message: 'Admin created successfully' }
 router.post("/signup", async (req, res) => {
   const { username, password } = req.body;
 
   try {
     const admin = await Admin.create({
-      username: username,
-      password: password,
-    });
-    res.status(200).json({
-      message: "Admin created successfully",
-      admin: admin,
+      username,
+      password,
+    }).then((adm) => {
+      res.status(200).json({
+        message: "Admin created successfully",
+        admin: adm,
+      });
     });
   } catch (error) {
     console.log(error.message);
@@ -31,25 +27,23 @@ router.post("/signup", async (req, res) => {
   }
 });
 
-// - POST /admin/courses
-//   Description: Creates a new course.
-//   Input: Headers: { 'username': 'username', 'password': 'password' }, Body: { title: 'course title', description: 'course description', price: 100, imageLink: 'https://linktoimage.com' }
-//   Output: { message: 'Course created successfully', courseId: "new course id" }
+// Implement course creation logic
 router.post("/courses", adminMiddleware, async (req, res) => {
-  // Implement course creation logic
   const { username, password } = req.headers;
   const { title, description, price, imageLink } = req.body;
 
   try {
     const course = await Course.create({
-      title: title,
-      description: description,
-      price: price,
-      imageLink: imageLink,
-    });
-    res.status(200).json({
-      message: "Course created successfully",
-      course: course,
+      title,
+      description,
+      price,
+      imageLink,
+    }).then((cor) => {
+      res.status(200).json({
+        message: "Course created successfully",
+        course: cor,
+        courseId: cor._id,
+      });
     });
   } catch (error) {
     console.log(error.message);
@@ -57,23 +51,20 @@ router.post("/courses", adminMiddleware, async (req, res) => {
   }
 });
 
-// - GET /admin/courses
-//   Description: Returns all the courses.
-//   Input: Headers: { 'username': 'username', 'password': 'password' }
-//   Output: { courses: [ { id: 1, title: 'course title', description: 'course description', price: 100, imageLink: 'https://linktoimage.com', published: true }, ... ] }
+// Implement fetching all courses logic
 router.get("/courses", adminMiddleware, async (req, res) => {
-  // Implement fetching all courses logic
+  const { username, password } = req.headers;
 
   try {
-    const courses = await Course.find({});
-    res.status(200).json({
-      message: "Course created successfully",
-      courses: courses,
+    const courses = await Course.find({}).then((cor) => {
+      res.status(200).json({
+        message: "List of all courses",
+        courses: cor,
+      });
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-
 });
 
 module.exports = router;
