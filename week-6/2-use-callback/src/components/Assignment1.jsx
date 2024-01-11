@@ -6,21 +6,22 @@ export function Assignment1() {
   const [count, setCount] = useState(0);
 
   // Your code starts here
-  function handleIncrement() {
-    setCount(count + 1);
-  }
+  const handleIncrement = useCallback(() => {
+    setCount((prevCount) => prevCount + 1);
+  }, []);
 
-  function handleDecrement() {
-    setCount(count - 1);
-  }
+  const handleDecrement = useCallback(() => {
+    setCount((prevCount) => prevCount - 1);
+  }, []);
+
   // Your code ends here
 
   return (
     <div>
       <p>Count: {count}</p>
       <CounterButtons
-        onIncrement={useCallback(handleIncrement, [count])}
-        onDecrement={useCallback(handleDecrement, [count])}
+        onIncrement={handleIncrement}
+        onDecrement={handleDecrement}
       />
     </div>
   );
