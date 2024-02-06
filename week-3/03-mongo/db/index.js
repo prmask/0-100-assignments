@@ -38,9 +38,12 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please enter a secure password"],
   },
-  purchased: {
-    type: Array,
-  },
+  purchasedCourses: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Course",
+    },
+  ],
 });
 
 // Course Schema
@@ -53,18 +56,13 @@ const CourseSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please enter the description"],
   },
-  price: {
-    type: Number,
-    required: [true, "Please enter the price"],
-  },
   imageLink: {
     type: String,
     required: [true, "Please enter a image path"],
   },
-  published: {
-    type: Boolean,
-    required: [true, "Please enter published or not"],
-    default: true,
+  price: {
+    type: Number,
+    required: [true, "Please enter the price"],
   },
 });
 

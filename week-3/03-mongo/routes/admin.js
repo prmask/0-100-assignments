@@ -29,8 +29,8 @@ router.post("/signup", async (req, res) => {
 
 // Implement course creation logic
 router.post("/courses", adminMiddleware, async (req, res) => {
-  const { username, password } = req.headers;
-  const { title, description, price, imageLink } = req.body;
+  // const { username, password } = req.headers;
+  const { title, description, imageLink, price } = req.body;
 
   try {
     const course = await Course.create({
@@ -53,7 +53,7 @@ router.post("/courses", adminMiddleware, async (req, res) => {
 
 // Implement fetching all courses logic
 router.get("/courses", adminMiddleware, async (req, res) => {
-  const { username, password } = req.headers;
+  // const { username, password } = req.headers;
 
   try {
     const courses = await Course.find({}).then((cor) => {

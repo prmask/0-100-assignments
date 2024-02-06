@@ -29,7 +29,7 @@ router.post("/signup", async (req, res) => {
 
 // Implement listing all courses logic
 router.get("/courses", userMiddleware, async (req, res) => {
-  const { username, password } = req.headers;
+  // const { username, password } = req.headers;
 
   try {
     const courses = await Course.find({}).then((cor) => {
@@ -50,7 +50,7 @@ router.post("/courses/:courseId", userMiddleware, async (req, res) => {
   try {
     const result = await User.findOneAndUpdate(
       { username },
-      { $push: { purchased: req.params.courseId } }
+      { $push: { purchasedCourses: req.params.courseId } }
     ).then((cor) => {
       res.status(200).json({
         message: "Course purchased successfully",
@@ -63,21 +63,38 @@ router.post("/courses/:courseId", userMiddleware, async (req, res) => {
 });
 
 // Implement fetching purchased courses logic
-router.get("/purchasedCourses", userMiddleware, (req, res) => {
+router.get("/purchasedCourses", userMiddleware, async (req, res) => {
   const { username } = req.headers;
 
-  User.findOne({ username })
-    .then((courses) => {
-      Course.find({ _id: { $in: courses.purchased } }).then((courses) => {
-        res.status(200).json({
-          message: "Course purchased successfully",
-          courses: courses,
-        });
-      });
-    })
-    .catch((error) => {
-      res.sendStatus(500).json({ message: error.message });
-    });
+  const user = await User.findOne({
+    username: username,
+  });
+
+  console.log(user.purchasedCourses);
+
+  const courses = await Course.find({
+    _id: {
+      $in: user.purchasedCourses,
+    },
+  });
+
+  res.status(200).json({
+    message: "Course purchased successfully",
+    courses: courses,
+  });
+
+  // User.findOne({ username })
+  //   .then((courses) => {
+  //     Course.find({ _id: { $in: courses.purchasedCourses } }).then((courses) => {
+  //       res.status(200).json({
+  //         message: "Course purchased successfully",
+  //         courses: courses,
+  //       });
+  //     });
+  //   })
+  //   .catch((error) => {
+  //     res.sendStatus(500).json({ message: error.message });
+  //   });
 });
 
 module.exports = router;

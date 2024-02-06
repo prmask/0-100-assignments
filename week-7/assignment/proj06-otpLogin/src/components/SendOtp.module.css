@@ -1,0 +1,39 @@
+#mainDiv {
+  padding: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 15px;
+  border: 1px solid lightslategray;
+}
+
+h1 {
+  font-size: 2.5em;
+  font-weight: normal;
+  line-height: 1.1;
+}
+
+::placeholder {
+  font-size: 15px;
+}
+
+#otpIn1,
+#otpIn2,
+#otpIn3,
+#otpIn4 {
+  padding: 15px;
+  border-radius: 10px;
+  margin-left: 10px;
+  width: 20px;
+  border: 1px solid lightslategray;
+  background-color: #242424;
+}
+
+input[type="button"] {
+  margin-top: 20px;
+  background-color: #242424;
+  border: 1px solid lightslategray;
+  padding: 10px 30px;
+  border-radius: 10px;
+  cursor: pointer;
+}

@@ -1,0 +1,52 @@
+.container {
+  background-color: #010d1d;
+  opacity: 0.85;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  font-size: 2.8em;
+  font-weight: 800;
+  color: white;
+}
+
+#name {
+  background-color: #fff;
+  width: 650px;
+  padding: 10px;
+}
+
+input[type="button"] {
+  margin-top: 30px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1.2em;
+  color: #ffffff;
+  font-weight: 800;
+  font-family: inherit;
+  background-color: #067fff;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+input[type="button"]:hover {
+  border-color: #ffffff;
+}
+input[type="button"]:focus,
+input[type="button"]:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+#birthdayCards {
+  background: #000;
+}

@@ -1,0 +1,6 @@
+body {
+  display: flex;
+  flex-direction: column-reverse;
+  min-height: 98vh;
+  justify-content: baseline;
+}
