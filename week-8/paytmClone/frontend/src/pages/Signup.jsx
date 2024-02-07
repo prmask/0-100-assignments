@@ -58,20 +58,12 @@ export const Signup = () => {
                     lastName,
                     password,
                   })
-                  .then((res) => {
-                    console.log({ res }, res.data, "====================");
-                    localStorage.setItem("token", res.data.token);
+                  .then((response) => {
+                    localStorage.setItem("token", response.data.token);
                     navigate("/dashboard");
                   })
                   .catch((error) => {
-                    if (error.response) {
-                      console.log(error.response);
-                      console.log("server responded");
-                    } else if (error.request) {
-                      console.log("network error");
-                    } else {
-                      console.log(error);
-                    }
+                    console.log("Sign up error ", error);
                   });
               }}
               label={"Sign up"}

@@ -68,16 +68,13 @@ router.post("/signup", async (req, res) => {
 });
 
 const signinBody = zod.object({
-  username: zod.string().email("Invalid email format"),
-  password: zod
-    .string()
-    .min(8, "Password must be at least 8 characters")
-    .max(32),
+  username: zod.string().email(),
+  password: zod.string().min(8).max(32),
 });
 
 router.post("/signin", async (req, res) => {
   const { success } = signinBody.safeParse(req.body);
-
+  console.log({ success }, req.body, "RRRRRRRRRRRRRRRRRRRRR");
   if (!success) {
     return res.status(411).json({
       message: "Email already taken / Incorrect inputs",
